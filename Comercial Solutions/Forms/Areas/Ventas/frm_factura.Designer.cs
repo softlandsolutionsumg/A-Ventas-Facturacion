@@ -36,6 +36,8 @@
             this.txt_direccion = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbl_PORCENTAJE = new System.Windows.Forms.Label();
+            this.lbl_Descuento = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -47,7 +49,7 @@
             this.cmb_establecimiento = new System.Windows.Forms.ComboBox();
             this.txtPRUEBA = new System.Windows.Forms.TextBox();
             this.cmb_producto = new System.Windows.Forms.ComboBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dtg_detalle = new System.Windows.Forms.DataGridView();
             this.Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,14 +63,14 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lblcorrelativo = new System.Windows.Forms.Label();
             this.pnl_producto = new System.Windows.Forms.Panel();
-            this.lbl_Descuento = new System.Windows.Forms.Label();
-            this.lbl_PORCENTAJE = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtg_detalle)).BeginInit();
             this.grp_detalle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.pnl_producto.SuspendLayout();
@@ -126,6 +128,7 @@
             this.pictureBox1.Size = new System.Drawing.Size(48, 50);
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // txt_direccion
             // 
@@ -159,10 +162,30 @@
             this.panel1.Controls.Add(this.txt_nombre);
             this.panel1.Controls.Add(this.textBox2);
             this.panel1.Controls.Add(this.txt_direccion);
-            this.panel1.Location = new System.Drawing.Point(12, 155);
+            this.panel1.Location = new System.Drawing.Point(12, 122);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(580, 90);
             this.panel1.TabIndex = 19;
+            // 
+            // lbl_PORCENTAJE
+            // 
+            this.lbl_PORCENTAJE.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_PORCENTAJE.Location = new System.Drawing.Point(486, 35);
+            this.lbl_PORCENTAJE.Name = "lbl_PORCENTAJE";
+            this.lbl_PORCENTAJE.Size = new System.Drawing.Size(44, 19);
+            this.lbl_PORCENTAJE.TabIndex = 29;
+            this.lbl_PORCENTAJE.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_PORCENTAJE.Visible = false;
+            // 
+            // lbl_Descuento
+            // 
+            this.lbl_Descuento.AutoSize = true;
+            this.lbl_Descuento.Location = new System.Drawing.Point(423, 36);
+            this.lbl_Descuento.Name = "lbl_Descuento";
+            this.lbl_Descuento.Size = new System.Drawing.Size(62, 13);
+            this.lbl_Descuento.TabIndex = 28;
+            this.lbl_Descuento.Text = "Descuento:";
+            this.lbl_Descuento.Visible = false;
             // 
             // label6
             // 
@@ -237,7 +260,7 @@
             // 
             this.cmb_establecimiento.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmb_establecimiento.FormattingEnabled = true;
-            this.cmb_establecimiento.Location = new System.Drawing.Point(337, 100);
+            this.cmb_establecimiento.Location = new System.Drawing.Point(331, 72);
             this.cmb_establecimiento.Name = "cmb_establecimiento";
             this.cmb_establecimiento.Size = new System.Drawing.Size(104, 21);
             this.cmb_establecimiento.TabIndex = 20;
@@ -249,7 +272,7 @@
             this.txtPRUEBA.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtPRUEBA.Enabled = false;
             this.txtPRUEBA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPRUEBA.Location = new System.Drawing.Point(250, 72);
+            this.txtPRUEBA.Location = new System.Drawing.Point(244, 44);
             this.txtPRUEBA.Name = "txtPRUEBA";
             this.txtPRUEBA.Size = new System.Drawing.Size(191, 13);
             this.txtPRUEBA.TabIndex = 22;
@@ -262,19 +285,25 @@
             this.cmb_producto.Size = new System.Drawing.Size(135, 21);
             this.cmb_producto.TabIndex = 23;
             // 
-            // dataGridView1
+            // dtg_detalle
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dtg_detalle.AllowUserToAddRows = false;
+            this.dtg_detalle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dtg_detalle.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dtg_detalle.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dtg_detalle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtg_detalle.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Cantidad,
             this.Producto,
             this.Precio,
             this.Sub_Total});
-            this.dataGridView1.Location = new System.Drawing.Point(46, 19);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(507, 82);
-            this.dataGridView1.TabIndex = 24;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dtg_detalle.Location = new System.Drawing.Point(46, 19);
+            this.dtg_detalle.Name = "dtg_detalle";
+            this.dtg_detalle.RowHeadersVisible = false;
+            this.dtg_detalle.Size = new System.Drawing.Size(507, 158);
+            this.dtg_detalle.TabIndex = 24;
+            this.dtg_detalle.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // Cantidad
             // 
@@ -300,10 +329,14 @@
             // 
             // grp_detalle
             // 
-            this.grp_detalle.Controls.Add(this.dataGridView1);
-            this.grp_detalle.Location = new System.Drawing.Point(12, 294);
+            this.grp_detalle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.grp_detalle.Controls.Add(this.label11);
+            this.grp_detalle.Controls.Add(this.dtg_detalle);
+            this.grp_detalle.Controls.Add(this.textBox1);
+            this.grp_detalle.Location = new System.Drawing.Point(12, 261);
             this.grp_detalle.Name = "grp_detalle";
-            this.grp_detalle.Size = new System.Drawing.Size(516, 107);
+            this.grp_detalle.Size = new System.Drawing.Size(580, 217);
             this.grp_detalle.TabIndex = 25;
             this.grp_detalle.TabStop = false;
             this.grp_detalle.Text = "Detalle factura";
@@ -312,7 +345,7 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(247, 103);
+            this.label7.Location = new System.Drawing.Point(241, 75);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(84, 13);
             this.label7.TabIndex = 28;
@@ -323,7 +356,7 @@
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(247, 56);
+            this.label8.Location = new System.Drawing.Point(241, 28);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(125, 13);
             this.label8.TabIndex = 29;
@@ -383,30 +416,31 @@
             this.pnl_producto.Controls.Add(this.pictureBox2);
             this.pnl_producto.Controls.Add(this.txt_cantidad);
             this.pnl_producto.Controls.Add(this.label10);
-            this.pnl_producto.Location = new System.Drawing.Point(13, 251);
+            this.pnl_producto.Location = new System.Drawing.Point(13, 218);
             this.pnl_producto.Name = "pnl_producto";
             this.pnl_producto.Size = new System.Drawing.Size(515, 37);
             this.pnl_producto.TabIndex = 35;
             // 
-            // lbl_Descuento
+            // textBox1
             // 
-            this.lbl_Descuento.AutoSize = true;
-            this.lbl_Descuento.Location = new System.Drawing.Point(423, 36);
-            this.lbl_Descuento.Name = "lbl_Descuento";
-            this.lbl_Descuento.Size = new System.Drawing.Size(62, 13);
-            this.lbl_Descuento.TabIndex = 28;
-            this.lbl_Descuento.Text = "Descuento:";
-            this.lbl_Descuento.Visible = false;
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBox1.Location = new System.Drawing.Point(401, 191);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 36;
             // 
-            // lbl_PORCENTAJE
+            // label11
             // 
-            this.lbl_PORCENTAJE.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_PORCENTAJE.Location = new System.Drawing.Point(486, 35);
-            this.lbl_PORCENTAJE.Name = "lbl_PORCENTAJE";
-            this.lbl_PORCENTAJE.Size = new System.Drawing.Size(44, 19);
-            this.lbl_PORCENTAJE.TabIndex = 29;
-            this.lbl_PORCENTAJE.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbl_PORCENTAJE.Visible = false;
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(347, 194);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(36, 13);
+            this.label11.TabIndex = 37;
+            this.label11.Text = "Total";
             // 
             // frm_factura
             // 
@@ -436,8 +470,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtg_detalle)).EndInit();
             this.grp_detalle.ResumeLayout(false);
+            this.grp_detalle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.pnl_producto.ResumeLayout(false);
             this.pnl_producto.PerformLayout();
@@ -467,7 +502,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtPRUEBA;
         private System.Windows.Forms.ComboBox cmb_producto;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dtg_detalle;
         private System.Windows.Forms.GroupBox grp_detalle;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
@@ -483,5 +518,7 @@
         private System.Windows.Forms.Panel pnl_producto;
         private System.Windows.Forms.Label lbl_PORCENTAJE;
         private System.Windows.Forms.Label lbl_Descuento;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label11;
     }
 }

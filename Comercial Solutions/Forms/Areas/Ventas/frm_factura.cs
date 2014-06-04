@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Comercial_Solutions.Clases;
 using Comercial_Solutions.Forms.Principal;
 using i3nRiqJSON;
+using System.Collections;
 
 namespace Comercial_Solutions.Forms.Areas.Ventas
 {
@@ -221,11 +222,7 @@ namespace Comercial_Solutions.Forms.Areas.Ventas
         }
 
 
-        public void AgregaralDetalle() { 
-        
-        
-        
-        }
+       
 
         private void cmb_departamento_SelectionChangeCommitted(object sender, EventArgs e)
         {
@@ -247,6 +244,118 @@ namespace Comercial_Solutions.Forms.Areas.Ventas
             Resetear();
             textBox2.Text = "";
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            verificarTOTAL();
+        }
+
+
+        public void verificarTOTAL()
+        {
+            Cls_Inventario d = new Cls_Inventario();
+
+            foreach (DataGridViewRow row in dtg_detalle.Rows)
+            {
+                Console.WriteLine("RECORRIENDO EL DATAGRIDVIEW " + row.Cells[0].Value);
+                string query = "select G.tbm_almacen_idtbm_bodega as almacen,G.cantidad as CantidadINV ,G.tbm_producto_finalizado_idtbm_producto_finalizado as IDProdu from (select DISTINCT(tbm_producto_finalizado_idtbm_producto_finalizado),tx_nombre,cantidad,tbm_almacen_idtbm_bodega from tbm_almacen,tbt_inventario,tbm_producto_finalizado where tbm_almacen.tbm_establecimiento_cod_establecimiento='" + cmb_establecimiento.SelectedValue.ToString() + "' AND tbt_inventario.tbm_almacen_idtbm_bodega=tbm_almacen.idtbm_bodega AND  tbm_producto_finalizado.idtbm_producto_finalizado	=tbm_producto_finalizado_idtbm_producto_finalizado)as G where 	G.tx_nombre='" + row.Cells[1].Value.ToString() + "'";
+                //  v1 += Convert.ToInt32(row.Cells[0].Value);
+                ArrayList f = (db.consultar(query));
+                int CantidadINVENTARIO = 0;
+                int CantidadSOLICITADA = Convert.ToInt32(row.Cells[0].Value);
+                string IDProducto = "";
+                string IDAlmacen = "";
+                foreach (Dictionary<string, string> dic in f)
+                {
+                    CantidadINVENTARIO = Convert.ToInt32(dic["CantidadINV"]);
+                    IDProducto = dic["IDProdu"];
+                    IDAlmacen = dic["almacen"];
+                  //  Console.WriteLine("Esta enviandose " + dic["almacen"]);
+                }
+                if (CantidadINVENTARIO > CantidadSOLICITADA)
+                {
+                    Restar(IDProducto,IDAlmacen,CantidadSOLICITADA);
+                    // restar y crear orden
+                    MessageBox.Show("restar y crear orden del producto "+IDProducto);
+                   // Restar(IDProducto,
+                    Crearorden(IDProducto, CantidadSOLICITADA);
+                }
+                else {
+                    MessageBox.Show("solo crear orden del producto " + IDProducto);
+                // solo crear orden
+                    Crearorden(IDProducto,CantidadSOLICITADA);
+                }
+
+            }
+        }
+
+        public void AgregaralDetalle()
+        {
+
+            this.dtg_detalle.Rows.Add(txt_cantidad.Text, cmb_producto.Text.ToString());
+
+        }
+
+
+        public void Crearorden(string producto, int cantidad)
+        {
+            string condicion = "fecha_solicitado LIKE '" + DateTime.Now.ToString("yyyy-MM-dd") + "%' AND tbm_producto_finalizado_idtbm_producto_finalizado='"+producto+"'";
+            string query = "SELECT producto_requerido FROM tbm_ordendeproduccion WHERE "+condicion;
+        // verificar si existe una de ese dia
+            ArrayList f = (db.consultar(query));
+            int intArra = f.Count;
+           
+            if (intArra > 0) {
+                int CANT = 0;// cantidad requerida
+            foreach (Dictionary<string, string> dic in f)
+            {
+
+                CANT = Convert.ToInt32(dic["producto_requerido"]);
+            }
+            //si existe
+                // seleccionar el dato q tenga de cantidad solicitada
+                    // sumarle el nuevo valor
+
+            string tabla = "tbm_ordendeproduccion";
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            int C = CANT + cantidad;
+            dict.Add("producto_requerido", Convert.ToString(C));
+            db.actualizar("3", tabla, dict, condicion);
+
+            }
+            else { 
+            
+            
+            }
+            // sino existe
+                //crear el registro
+
+
+
+        }
+
+        public void Restar(string producto,string almacen,int cantidad) {
+            string condicion = "tbm_producto_finalizado_idtbm_producto_finalizado='" + producto + "' AND tbm_almacen_idtbm_bodega='" + almacen + "'";
+
+            string query = "select cantidad from tbt_inventario where " + condicion;
+            ArrayList f = (db.consultar(query));
+            int CANT= 0;
+            foreach (Dictionary<string, string> dic in f)
+            {
+              
+                CANT = Convert.ToInt32(dic["cantidad"]);
+            }
+            string tabla = "tbt_inventario";
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            int C=CANT-cantidad;
+            dict.Add("cantidad",Convert.ToString(C));
+            db.actualizar("3", tabla, dict, condicion);
+        }
+
+
+
+       
+
         //
         }
 

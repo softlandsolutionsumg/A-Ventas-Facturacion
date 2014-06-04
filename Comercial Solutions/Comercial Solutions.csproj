@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clases\Cls_Inventario.cs" />
     <Compile Include="Clases\Propp.cs" />
     <Compile Include="Forms\Areas\Logistica\beta3.cs">
       <SubType>Form</SubType>
